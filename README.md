@@ -13,5 +13,5 @@ Backend for education app
 #### - copy path Where contains file `Test-project.gzip` in `backend` project ( Mine is `E:\Software-Engineering\backend\src\data` ).
 #### - open cmd and paste : `mongorestore --gzip --archive=`your path`\Test-project.gzip --db Test-project --drop`( Mine is `mongorestore --gzip --archive=E:\Software-Engineering\backend\src\data\Test-project.gzip --db Test-project --drop`).
 ### 2. Then open your MongoDB Compass and You can see your database has been added.
-## Eventually, copy command line: 'npm start'  to run project. Remembering to ctrl + s after update database (That Test-project file will be updated).
+## Eventually, run command line: 'npm install' then 'npm start'  to run project. Don't forget to `ctrl + s` after update database (That Test-project file will be updated).
 ## That's it :))
