@@ -6,7 +6,7 @@ Backend for education app
   #### - Click this link to download and install mongodb: https://www.mongodb.com/try/download/community-kubernetes-operator.
   #### - Follow this video to install: https://youtu.be/RP4enc7z1Lw.
   ### 2. Install MongoDB Command Line Database Tools
-  #### - Click this link to download and install: https://www.mongodb.com/try/download/community-kubernetes-operator (`msi`)
+  #### - Click this link to download and install: https://www.mongodb.com/try/download/database-tools (`msi`)
   #### - Add this path: 'C:\Program Files\MongoDB\Tools\100\bin' to path at environments variables.
 ## Opening BACKEND Project
 ### 1. Restore database:
