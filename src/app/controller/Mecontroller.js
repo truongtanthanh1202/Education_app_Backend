@@ -1,19 +1,19 @@
-const student = require("../model/User/Student/Student");
-const teacher = require("../model/User/Teacher/Teacher");
-const { mongooseToObject } = require("../../util/mongoose");
-const { validationResult } = require("express-validator");
+const student = require('../model/User/Student/Student');
+const teacher = require('../model/User/Teacher/Teacher');
+const {mongooseToObject} = require('../../util/mongoose');
+const {validationResult} = require('express-validator');
 class MeController {
   //[GET]
   storeInfor(req, res, error) {
-    if (req.params.slug === "Teacher") {
-      teacher.findById(req.params.id).then((teacher) => {
-        res.render("me/storeInfor", {
+    if (req.params.slug === 'Teacher') {
+      teacher.findById(req.params.id).then(teacher => {
+        res.render('me/storeInfor', {
           user: mongooseToObject(teacher),
         });
       });
-    } else if (req.params.slug === "Student") {
-      student.findById(req.params.id).then((student) => {
-        res.render("me/storeInfor", {
+    } else if (req.params.slug === 'Student') {
+      student.findById(req.params.id).then(student => {
+        res.render('me/storeInfor', {
           user: mongooseToObject(student),
         });
       });
@@ -22,15 +22,15 @@ class MeController {
 
   //[GET]
   MyHome(req, res) {
-    if (req.params.slug === "Teacher") {
-      teacher.findById(req.params.id).then((teacher) => {
-        res.render("me/home", {
+    if (req.params.slug === 'Teacher') {
+      teacher.findById(req.params.id).then(teacher => {
+        res.render('me/home', {
           user: mongooseToObject(teacher),
         });
       });
-    } else if (req.params.slug === "Student") {
-      student.findById(req.params.id).then((student) => {
-        res.render("me/home", {
+    } else if (req.params.slug === 'Student') {
+      student.findById(req.params.id).then(student => {
+        res.render('me/home', {
           user: mongooseToObject(student),
         });
       });
@@ -38,17 +38,17 @@ class MeController {
   }
 
   async resetPasswordHome(req, res) {
-    if (req.params.slug === "Teacher") {
+    if (req.params.slug === 'Teacher') {
       await teacher.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: { password: req.body.password } },
-        { upsert: true }
+        {_id: req.params.id},
+        {$set: {password: req.body.password}},
+        {upsert: true},
       );
-    } else if (req.params.slug === "Student") {
+    } else if (req.params.slug === 'Student') {
       await student.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: { password: req.body.password } },
-        { upsert: true }
+        {_id: req.params.id},
+        {$set: {password: req.body.password}},
+        {upsert: true},
       );
     }
     res.redirect(`/me/${req.params.slug}/${req.params.id}/MyHome`);
@@ -63,25 +63,24 @@ class MeController {
         email: req.body.email,
       });
       if (Teacher === null) {
-        res.json({ message: 'Something went wrong!' });
+        res.json({message: 'Something went wrong!'});
       } else {
         await teacher.findOneAndUpdate(
-          { email: req.body.email },
-          { $set: { password: req.body.password } },
-          { upsert: true }
+          {email: req.body.email},
+          {$set: {password: req.body.password}},
+          {upsert: true},
         );
-        res.json({ message: 'your password has been changed successfully!' });
+        res.json({message: 'your password has been changed successfully!'});
       }
     } else {
       await student.findOneAndUpdate(
-        { email: req.body.email },
-        { $set: { password: req.body.password } },
-        { upsert: true }
+        {email: req.body.email},
+        {$set: {password: req.body.password}},
+        {upsert: true},
       );
-      res.json({ message: 'your password has been changed successfully!' });
+      res.json({message: 'your password has been changed successfully!'});
     }
   }
-
 
   storeIn(req, res) {
     const error = validationResult(req);
@@ -89,30 +88,30 @@ class MeController {
       res.json(error);
     } else {
       student
-        .findOne({ email: req.body.email, password: req.body.password })
-        .then((student) => {
+        .findOne({email: req.body.email, password: req.body.password})
+        .then(student => {
           if (student !== null) {
-            res.render("me/storeInfor", {
+            res.render('me/storeInfor', {
               user: mongooseToObject(student),
             });
           } else {
             teacher
-              .findOne({ email: req.body.email, password: req.body.password })
-              .then((teacher) => {
+              .findOne({email: req.body.email, password: req.body.password})
+              .then(teacher => {
                 if (teacher !== null) {
-                  res.render("me/storeInfor", {
+                  res.render('me/storeInfor', {
                     user: mongooseToObject(teacher),
                   });
                 } else {
-                  res.redirect("back");
+                  res.redirect('back');
                 }
               })
-              .catch((error) => {
+              .catch(error => {
                 res.send(error);
               });
           }
         })
-        .catch((error) => {
+        .catch(error => {
           res.send(error);
         });
     }
@@ -120,26 +119,26 @@ class MeController {
 
   storeTest(req, res) {
     student
-      .findOne({ email: req.body.email, password: req.body.password })
-      .then((student) => {
+      .findOne({email: req.body.email, password: req.body.password})
+      .then(student => {
         if (student !== null) {
           res.json(student);
         } else {
           teacher
-            .findOne({ email: req.body.email, password: req.body.password })
-            .then((teacher) => {
+            .findOne({email: req.body.email, password: req.body.password})
+            .then(teacher => {
               if (teacher !== null) {
                 res.json(teacher);
               } else {
-                res.json({ messsage: "Account do not exist" });
+                res.json({messsage: 'Account do not exist'});
               }
             })
-            .catch((error) => {
+            .catch(error => {
               res.send(error);
             });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         res.send(error);
       });
   }
