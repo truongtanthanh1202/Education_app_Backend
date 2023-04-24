@@ -76,6 +76,9 @@ class TeacherController {
         const mycourse = await course.find({id_teacher: req.params.id});
         res.render('teachers/showCourse', {
             course: mulMongooseToObject(mycourse),
+            teacher: {
+                id: req.params.id,
+            },
         });
     }
 
@@ -100,15 +103,23 @@ class TeacherController {
         ];
         data['id_teacher'] = req.params.id;
         const newcourse = new course(data);
-        newcourse.save().then(() => {
-            course.findOne({description: req.body.description}).then(result => {
-                res.render('teachers/newLesson', {
-                    user: {
-                        id_teacher: req.params.id,
-                        id_course: result._id,
-                    },
-                });
+        newcourse.save().then(async () => {
+            const mycourse = await course.find({id_teacher: req.params.id});
+            res.render('teachers/showCourse', {
+                course: mulMongooseToObject(mycourse),
+                teacher: {
+                    id: req.params.id,
+                },
             });
+        });
+    }
+
+    renderCreatLesson(req, res) {
+        res.render('teachers/newLesson', {
+            teacher: {
+                id_teacher: req.params.id_teacher,
+                id_course: req.params.id_course,
+            },
         });
     }
 
@@ -135,10 +146,17 @@ class TeacherController {
         });
         const newLesson = new lesson(data);
         const file = data;
-        newLesson.save().then(() => {
+        newLesson.save().then(async () => {
             //res.json({ message: "Lesson has been created successfully!" });
-            res.render('teachers/newFile', {
-                file: file,
+            const mylesson = await lesson.find({
+                id_course: req.params.id_course,
+            });
+            res.render('teachers/showLesson', {
+                lesson: mulMongooseToObject(mylesson),
+                course: {
+                    id_course: req.params.id_course,
+                    id_teacher: req.params.id_teacher,
+                },
             });
         });
     }
@@ -146,6 +164,10 @@ class TeacherController {
         const mylesson = await lesson.find({id_course: req.params.id_course});
         res.render('teachers/showLesson', {
             lesson: mulMongooseToObject(mylesson),
+            course: {
+                id_course: req.params.id_course,
+                id_teacher: req.params.id_teacher,
+            },
         });
     }
 
@@ -154,9 +176,16 @@ class TeacherController {
         mylesson.video =
             mylesson.video.slice(0, 23) + '/embed' + mylesson.video.slice(23);
         mylesson.video = mylesson.video.replace('watch?v=', '');
+        if (mylesson.video.indexOf('&', 0) > 0) {
+            mylesson.video = mylesson.video.replace(
+                mylesson.video.slice(mylesson.video.indexOf('&', 0)),
+                '',
+            );
+        }
         res.render('teachers/showParticularLesson', {
             lesson: mongooseToObject(mylesson),
         });
+        // res.json(mylesson.video);
     }
 }
 

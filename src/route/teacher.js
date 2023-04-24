@@ -16,22 +16,26 @@ router.use('/:id/MyProfile', TeacherController.storeInfor);
 router.use('/MyProfile', TeacherController.storeInfor);
 router.use('/:id/MyHome', TeacherController.MyHome);
 router.post('/storeInfor', TeacherController.store);
-router.use('/:slug/:id/create_course', TeacherController.renderCreation);
+router.use('/:id/create_course', TeacherController.renderCreation);
 router.post(
-  '/:id/myCourse',
-  multer.single('thumbnail'),
-  TeacherController.createCourse,
+    '/:id/myCourse',
+    multer.single('thumbnail'),
+    TeacherController.createCourse,
 );
 router.use('/:id/MyAllCourse', TeacherController.showCourse);
+router.use(
+    '/:id_teacher/:id_course/creat_lesson',
+    TeacherController.renderCreatLesson,
+);
 router.post(
-  '/:id_teacher/:id_course/myLesson',
-  multer.any('document'),
-  TeacherController.createLesson,
+    '/:id_teacher/:id_course/myLesson',
+    multer.any('document'),
+    TeacherController.createLesson,
 );
 router.use('/:id_teacher/:id_course/MyAllLesson', TeacherController.showLesson);
 router.use(
-  '/:id_teacher/:id_course/:id_lesson/:topic',
-  TeacherController.showDetailLesson,
+    '/:id_teacher/:id_course/:id_lesson/:topic',
+    TeacherController.showDetailLesson,
 );
 
 module.exports = router;

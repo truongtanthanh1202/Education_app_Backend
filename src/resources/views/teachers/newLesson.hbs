@@ -6,7 +6,7 @@
         action=''
     >
         <div class='container-form'><a
-                href='/'
+                href='/me/Teacher/{{teacher.id_teacher}}/MyHome'
                 style='text-decoration: none;'
             >Home</a></div>
 
@@ -74,6 +74,6 @@
     document.getElementById('btn-create-profile'); $("#firstname").on("input",
     function() { firstname = $(this).val(); }); $("#lastname").on("input",
     function() { lastname = $(this).val(); }); btnCreatProfile.onclick =
-    function(){ createFormProfile.action = `/teacher/{{user.id_teacher}}/{{user.id_course}}/myLesson`;
+    function(){ createFormProfile.action = `/teacher/{{teacher.id_teacher}}/{{teacher.id_course}}/myLesson`;
     createFormProfile.submit(); } });
 </script>

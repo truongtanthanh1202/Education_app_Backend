@@ -1,27 +1,51 @@
 <div class='mt-4'>
-  <div class='row'>
-    {{#each course}}
-      <div class='col-sm-6 col-lg-3'>
-        <div class='card' style='margin: 16px'>
-          <a href='/teacher/{{this.id_teacher}}/{{this._id}}/MyAllLesson'>
-            <img
-              src='data:{{this.thumbnail.contentType}};base64,{{this.thumbnail.data}}'
-              class='card-img-top'
-              alt='khoa hoc'
-              style='width:  15vw;
+    <div><button
+            type='button'
+            class='btn btn-outline-secondary'
+            style='margin-left: 20px;
+            margin-bottom: 20px'
+        ><a
+                href='/me/Teacher/{{teacher.id}}/MyHome'
+                style='text-decoration: none;
+                color:yellowgreen'
+            >Home</a></button></div>
+
+    <div><button
+            type='button'
+            class='btn btn-outline-secondary'
+            style='margin-left: 20px;'
+        ><a
+                href='/teacher/{{teacher.id}}/create_course'
+                style='text-decoration: none;
+                color:yellowgreen'
+            >+Add course</a></button></div>
+    <div class='row'>
+        {{#each course}}
+            <div class='col-sm-6 col-lg-3'>
+                <div class='card' style='margin: 16px'>
+                    <a
+                        href='/teacher/{{this.id_teacher}}/{{this._id}}/MyAllLesson'
+                    >
+                        <img
+                            src='data:{{this.thumbnail.contentType}};base64,{{this.thumbnail.data}}'
+                            class='card-img-top'
+                            alt='khoa hoc'
+                            style='width:  15vw;
                     height: 100px;
                     background-size: cover;'
-            />
-          </a>
-          <div class='card-body'>
-            <a href='/teacher/{{this.id_teacher}}/{{this._id}}/MyAllLesson'>
-              <h5 class='card-title'>{{this.description}}</h5>
-            </a>
-            <p class='card-text'>{{this.description}}</p>
-            <a href='/' class='btn btn-primary'>Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    {{/each}}
-  </div>
+                        />
+                    </a>
+                    <div class='card-body'>
+                        <a
+                            href='/teacher/{{this.id_teacher}}/{{this._id}}/MyAllLesson'
+                        >
+                            <h5 class='card-title'>{{this.description}}</h5>
+                        </a>
+                        <p class='card-text'>{{this.description}}</p>
+                        <a href='/' class='btn btn-primary'>Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
 </div>
