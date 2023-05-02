@@ -1,0 +1,79 @@
+<div class='mt-4'>
+    <form
+        name='create-form-profile'
+        method='POST'
+        enctype='multipart/form-data'
+        action=''
+    >
+        <div class='container-form'><a
+                href='/me/Teacher/{{lesson.id_teacher}}/MyHome'
+                style='text-decoration: none;'
+            >Home</a></div>
+
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <label
+                class='form-label'
+                for='customFile'
+                style='min-width: 100px;'
+            >Thumbnail</label>
+            <input
+                type='file'
+                class='form-control'
+                id='customFile'
+                name='thumbnail'
+            />
+        </div>
+
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <label for='topic' class='repair-label'>Topic</label>
+            <input type='text' name='topic' class='form-control' id='topic' />
+        </div>
+
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <label for='description' class='repair-label'>Description</label>
+            <input
+                type='text'
+                name='description'
+                class='form-control'
+                id='description'
+            />
+        </div>
+
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <label for='video' class='repair-label'>Video</label>
+            <input type='text' name='video' class='form-control' id='video' />
+        </div>
+
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <label
+                class='form-label'
+                for='customFile'
+                style='min-width: 100px;'
+            >Document</label>
+            <input
+                type='file'
+                class='form-control'
+                id='customFile'
+                name='document'
+                multiple
+            />
+        </div>
+
+        <button
+            type='submit'
+            class='btn btn-primary'
+            id='btn-create-profile'
+        >Submit</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){ var
+    createFormProfile = document.forms['create-form-profile']; var firstname;
+    var lastname; var btnCreatProfile =
+    document.getElementById('btn-create-profile'); $("#firstname").on("input",
+    function() { firstname = $(this).val(); }); $("#lastname").on("input",
+    function() { lastname = $(this).val(); }); btnCreatProfile.onclick =
+    function(){ createFormProfile.action = `/teacher/{{lesson.id_teacher}}/{{lesson.id_course}}/{{lesson.id_lesson}}/editLesson?_method=PUT`;
+    createFormProfile.submit(); } });
+</script>

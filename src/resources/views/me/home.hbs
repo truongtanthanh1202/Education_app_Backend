@@ -36,12 +36,14 @@
                     <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
                         <a
                             class='dropdown-item'
-                            href='/me/{{user.title}}/{{user._id}}/MyProfile'
-                        >My profile</a>
-                        <a
-                            class='dropdown-item'
-                            href='/teacher/{{user._id}}/create_course'
-                        >Add course</a>
+                            href='/search/render_course/{{user._id}}/{{user.title}}'
+                        >Search</a>
+                        {{#if isteacher}}
+                            <a
+                                class='dropdown-item'
+                                href='/teacher/{{user._id}}/create_course'
+                            >Add course</a>
+                        {{/if}}
                         <div class='dropdown-divider'></div>
                         <a class='dropdown-item' href='/'>Log out</a>
                     </div>

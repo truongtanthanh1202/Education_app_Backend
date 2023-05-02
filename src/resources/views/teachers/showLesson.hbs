@@ -5,25 +5,38 @@
             style='margin-left: 20px;
             margin-bottom: 20px'
         ><a
-                href='/me/Teacher/{{course.id_teacher}}/MyHome'
+                href='/me/teacher/{{course.id_teacher}}/MyHome'
                 style='text-decoration: none;
                 color:yellowgreen'
             >Home</a></button></div>
-    <div><button
-            type='button'
-            class='btn btn-outline-secondary'
-            style='margin-left: 20px;'
-        ><a
-                href='/teacher/{{course.id_teacher}}/{{course.id_course}}/creat_lesson'
-                style='text-decoration: none;
+    <div
+        style='display: flex;
+            flex-direction:row'
+    ><div><button
+                type='button'
+                class='btn btn-outline-secondary'
+                style='margin-left: 20px;'
+            ><a
+                    href='/teacher/{{course.id_teacher}}/{{course.id_course}}/creat_lesson'
+                    style='text-decoration: none;
                 color:yellowgreen'
-            >+Add lesson</a></button></div>
+                >+Add lesson</a></button></div>
+        <div><button
+                type='button'
+                class='btn btn-outline-secondary'
+                style='margin-left: 20px;'
+            ><a
+                    href='/teacher/{{course.id_teacher}}/{{course.id_course}}/delete_lesson'
+                    style='text-decoration: none;
+                color:yellowgreen'
+                >+Delete lesson</a></button></div></div>
+
     <div class='row'>
         {{#each lesson}}
             <div class='col-sm-6 col-lg-3'>
                 <div class='card' style='margin: 16px'>
                     <a
-                        href='/teacher/{{this.id_teacher}}/{{this.id_course}}/{{this._id}}/{{this.topic}}'
+                        href='/teacher/{{this.id_teacher}}/{{this.id_course}}/{{this._id}}/{{this.topic}}/display'
                     >
                         <img
                             src='data:{{this.thumbnail.contentType}};base64,{{this.thumbnail.data}}'
@@ -36,7 +49,7 @@
                     </a>
                     <div class='card-body'>
                         <a
-                            href='/teacher/{{this.id_teacher}}/{{this.id_course}}/{{this._id}}/{{this.topic}}'
+                            href='/teacher/{{this.id_teacher}}/{{this.id_course}}/{{this._id}}/{{this.topic}}/display'
                         >
                             <h5 class='card-title'>{{this.topic}}</h5>
                         </a>

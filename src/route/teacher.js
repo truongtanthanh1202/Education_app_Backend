@@ -5,6 +5,7 @@ const router = express.Router();
 
 const TeacherController = require('../app/controller/Teachercontroller');
 const {validate} = require('../app/model/User/Student/Student');
+const Teachercontroller = require('../app/controller/Teachercontroller');
 router.use('/myProfile', TeacherController.storeInfor);
 // router.post(
 //   "/signup/MyProfile",
@@ -34,8 +35,27 @@ router.post(
 );
 router.use('/:id_teacher/:id_course/MyAllLesson', TeacherController.showLesson);
 router.use(
-    '/:id_teacher/:id_course/:id_lesson/:topic',
+    '/:id_teacher/:id_course/:id_lesson/:topic/display',
     TeacherController.showDetailLesson,
+);
+router.use(
+    '/:id_teacher/:id_course/delete_lesson',
+    TeacherController.renderDeleteLesson,
+);
+router.delete(
+    '/:id_teacher/:id_course/delete_lesson_real',
+    TeacherController.softDeleteLesson,
+);
+
+router.use(
+    '/:id_teacher/:id_course/:id_lesson/edit',
+    Teachercontroller.renderEdit,
+);
+
+router.put(
+    '/:id_teacher/:id_course/:id_lesson/editLesson',
+    multer.any('document'),
+    Teachercontroller.editLesson,
 );
 
 module.exports = router;

@@ -8,10 +8,11 @@ router.use('/:slug/:id/MyProfile', MeController.storeInfor);
 router.use('/:slug/:id/MyHome', MeController.MyHome);
 router.post('/:slug/:id/ResetPasswordHome', MeController.resetPasswordHome);
 router.post('/resetPassword', MeController.resetPassword);
+router.put('/:title/:id_user/changePassword', MeController.changePassword);
 router.post(
-  '/signin/MyProfile',
-  validator.validatorLogin(),
-  MeController.storeIn,
+    '/signin/MyProfile',
+    validator.validatorLogin(),
+    MeController.storeIn,
 );
 router.post('/logintest', MeController.storeTest);
 router.use('/total', Mecontroller.show);

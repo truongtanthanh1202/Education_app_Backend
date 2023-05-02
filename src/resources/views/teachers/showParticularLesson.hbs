@@ -1,50 +1,63 @@
 <div class='mt-4'>
-  <form
-    name='create-form-profile'
-    method='POST'
-    enctype='multipart/form-data'
-    action=''
-  >
-    <div class='container-form'><a
-        href='/me/Teacher/{{lesson.id_teacher}}/MyHome'
-        style='text-decoration: none;'
-      >Home</a></div>
+    <form
+        name='create-form-profile'
+        method='POST'
+        enctype='multipart/form-data'
+        action=''
+    >
+        <div class='container-form' style='margin-bottom: 20px'><a
+                href='/me/teacher/{{lesson.id_teacher}}/MyHome'
+                style='text-decoration: none;'
+            >Home</a></div>
 
-    <div class='form-group d-flex align-items-center repair-form-signup'>
-      <a
-        href='data:{{lesson.thumbnail.contentType}};base64,{{lesson.thumbnail.data}}'
-        download='{{lesson.thumbnail.name}}'
-        style='text-decoration: none'
-      >Thumbnail</a>
-    </div>
-    {{#each lesson.document}}
-      <div class='form-group d-flex align-items-center repair-form-signup'>
-        <a
-          href='data:{{this.contentType}};base64,{{this.data}}'
-          download='{{this.name}}'
-          style='text-decoration: none'
-        >{{this.name}}</a>
-      </div>
-    {{/each}}
+        <div><button
+                type='button'
+                class='btn btn-outline-secondary'
+                style='margin-left: 20px;
+            margin-bottom: 20px'
+            ><a
+                    href='/teacher/{{lesson.id_teacher}}/{{lesson.id_course}}/{{lesson._id}}/edit'
+                    style='text-decoration: none;
+                color:yellowgreen'
+                >Edit lesson</a></button></div>
 
-    <div class='form-group d-flex align-items-center repair-form-signup'>
-      <p>Topic: {{lesson.topic}}</p>
-    </div>
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <a
+                href='data:{{lesson.thumbnail.contentType}};base64,{{lesson.thumbnail.data}}'
+                download='{{lesson.thumbnail.name}}'
+                style='text-decoration: none'
+            >Thumbnail</a>
+        </div>
+        {{#each lesson.document}}
+            <div
+                class='form-group d-flex align-items-center repair-form-signup'
+            >
+                <a
+                    href='data:{{this.contentType}};base64,{{this.data}}'
+                    download='{{this.name}}'
+                    style='text-decoration: none'
+                >{{this.name}}</a>
+            </div>
+        {{/each}}
 
-    <div class='form-group d-flex align-items-center repair-form-signup'>
-      <p>Description: {{lesson.description}}</p>
-    </div>
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <p>Topic: {{lesson.topic}}</p>
+        </div>
 
-    <div class='form-group d-flex align-items-center repair-form-signup'>
-      <iframe width='420' height='345' src='{{lesson.video}}'>
-      </iframe>
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <p>Description: {{lesson.description}}</p>
+        </div>
 
-    </div>
+        <div class='form-group d-flex align-items-center repair-form-signup'>
+            <iframe width='420' height='345' src='{{lesson.video}}'>
+            </iframe>
 
-    {{! <button
+        </div>
+
+        {{! <button
       type="submit"
       class="btn btn-primary"
       id="btn-create-profile"
     >Submit</button> }}
-  </form>
+    </form>
 </div>
