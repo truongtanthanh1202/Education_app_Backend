@@ -29,12 +29,14 @@ class MeController {
             teacher.findById(req.params.id).then(teacher => {
                 res.render('me/home', {
                     user: mongooseToObject(teacher),
+                    isteacher: true,
                 });
             });
         } else if (req.params.slug === 'student') {
             student.findById(req.params.id).then(student => {
                 res.render('me/home', {
                     user: mongooseToObject(student),
+                    isteacher: false,
                 });
             });
         }

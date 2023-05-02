@@ -5,7 +5,7 @@
             style='margin-left: 20px;
             margin-bottom: 20px'
         ><a
-                href='/me/{{teacher.title}}/{{teacher.id}}/MyHome'
+                href='/me/teacher/{{teacher.id}}/MyHome'
                 style='text-decoration: none;
                 color:yellowgreen'
             >Home</a></button></div>
@@ -27,7 +27,8 @@
                         href='/teacher/{{this.id_teacher}}/{{this._id}}/MyAllLesson'
                     >
                         <img
-                            src='data:{{this.thumbnail.contentType}};base64,{{this.thumbnail.data}}'
+                            {{!-- src='data:{{this.thumbnail.contentType}};base64,{{this.thumbnail.data}}' --}}
+                            src='{{this.thumbnail}}'
                             class='card-img-top'
                             alt='khoa hoc'
                             style='width:  15vw;

@@ -22,18 +22,13 @@
                 >Edit lesson</a></button></div>
 
         <div class='form-group d-flex align-items-center repair-form-signup'>
-            <a
-                href='data:{{lesson.thumbnail.contentType}};base64,{{lesson.thumbnail.data}}'
-                download='{{lesson.thumbnail.name}}'
-                style='text-decoration: none'
-            >Thumbnail</a>
         </div>
         {{#each lesson.document}}
             <div
                 class='form-group d-flex align-items-center repair-form-signup'
             >
                 <a
-                    href='data:{{this.contentType}};base64,{{this.data}}'
+                    href='{{this.data}}'
                     download='{{this.name}}'
                     style='text-decoration: none'
                 >{{this.name}}</a>

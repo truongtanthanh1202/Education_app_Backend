@@ -13,9 +13,10 @@ const Course = new Schema({
         },
     ],
     thumbnail: {
-        name: String,
-        data: Buffer,
-        contentType: String,
+        // name: String,
+        // data: Buffer,
+        // contentType: String,
+        type: String,
     },
     rating: {type: String},
     createdAt: {type: Date, default: Date.now},

@@ -4,20 +4,18 @@ const slug = require('mongoose-slug-generator');
 const Schema = mongoose.Schema;
 
 const Teacher = new Schema({
-  title: {type: String},
-  firstname: {type: String},
-  lastname: {type: String},
-  email: {type: String},
-  password: {type: String},
-  otp: {type: String},
-  gender: {type: String},
-  avatar: {
-    name: String,
-    data: Buffer,
-    contentType: String,
-  },
-  createdAt: {type: Date, default: Date.now},
-  updatedAt: {type: Date, default: Date.now},
+    title: {type: String},
+    firstname: {type: String},
+    lastname: {type: String},
+    email: {type: String},
+    password: {type: String},
+    otp: {type: String},
+    gender: {type: String},
+    avatar: {
+        type: String,
+    },
+    createdAt: {type: Date, default: Date.now},
+    updatedAt: {type: Date, default: Date.now},
 });
 
 mongoose.plugin(slug);

@@ -96,12 +96,14 @@ class TeacherController {
     }
     createCourse(req, res) {
         const data = req.body;
+        //[Rating]
         const rating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
-        data['thumbnail'] = {
-            name: req.file.originalname,
-            data: fs.readFileSync(req.file.path).toString('base64'),
-            contentType: req.file.mimetype,
-        };
+        //[Thumbnail]
+        const base64 = Buffer.from(fs.readFileSync(req.file.path)).toString(
+            'base64',
+        );
+        data['thumbnail'] = `data:${req.file.mimetype};base64,${base64}`;
+        //[lesson]
         data['lesson'] = [
             {
                 id_lesson: req.body.id_lesson,
@@ -137,17 +139,15 @@ class TeacherController {
         data['id_teacher'] = req.params.id_teacher;
         data['document'] = [];
         docs.map(result => {
+            const base64 = Buffer.from(fs.readFileSync(result.path)).toString(
+                'base64',
+            );
             if (result.fieldname === 'thumbnail') {
-                data['thumbnail'] = {
-                    name: result.originalname,
-                    data: fs.readFileSync(result.path).toString('base64'),
-                    contentType: result.mimetype,
-                };
+                data['thumbnail'] = `data:${result.mimetype};base64,${base64}`;
             } else {
                 data['document'].push({
                     name: result.originalname,
-                    data: fs.readFileSync(result.path).toString('base64'),
-                    contentType: result.mimetype,
+                    data: `data:${result.mimetype};base64,${base64}`,
                 });
             }
         });
