@@ -42,11 +42,10 @@
     document.getElementById('recommend'); inputSearch.oninput = function(e){
     if(keyword !== e.target.value){ recommend.innerHTML = ''; } var keyword =
     e.target.value; axios.post('http://localhost:4848/search/search_keyword',{
-    keyword: keyword, }).then(function(res) { //console.log(res.data);
+    keyword: keyword, }).then(function(res) { console.log(res.data);
     recommend.innerHTML += res.data.map(function(item){ return `<li
     class="list-group-item" name="course_id[]" value="${item.description}"
     style="min-width: 200px">${item.description}</li>`; }); const rcmcourse =
-    document.getElementsByName('course_id[]'); rcmcourse[0].onmouseenter =
-    function(){ console.log(rcmcourse[0].value); } })};
+    document.getElementsByName('course_id[]'); })};
 
 </script>
