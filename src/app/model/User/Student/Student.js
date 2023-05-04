@@ -14,6 +14,11 @@ const Student = new Schema({
     avatar: {
         type: String,
     },
+    id_course: [
+        {
+            type: String,
+        },
+    ],
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now},
 });

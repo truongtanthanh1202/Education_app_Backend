@@ -99,21 +99,28 @@ class TeacherController {
         //[Rating]
         const rating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
         //[Thumbnail]
-        const base64 = Buffer.from(fs.readFileSync(req.file.path)).toString(
-            'base64',
-        );
+        const base64 = fs.readFileSync(req.file.path).toString('base64');
         data['thumbnail'] = `data:${req.file.mimetype};base64,${base64}`;
         //[lesson]
-        data['lesson'] = [
-            {
-                id_lesson: req.body.id_lesson,
-            },
-        ];
+        data['lesson'] = [];
         data['id_teacher'] = req.params.id;
         data['rating'] = rating;
         const newcourse = new course(data);
         newcourse.save().then(async () => {
             const mycourse = await course.find({id_teacher: req.params.id});
+            const parcourse = await course.findOne({
+                description: data.description,
+            });
+            await teacher.updateOne(
+                {_id: req.params.id},
+                {
+                    $push: {
+                        course: {
+                            id_course: parcourse._id.toString(),
+                        },
+                    },
+                },
+            );
             res.render('teachers/showCourse', {
                 course: mulMongooseToObject(mycourse),
                 teacher: {
@@ -139,9 +146,7 @@ class TeacherController {
         data['id_teacher'] = req.params.id_teacher;
         data['document'] = [];
         docs.map(result => {
-            const base64 = Buffer.from(fs.readFileSync(result.path)).toString(
-                'base64',
-            );
+            const base64 = fs.readFileSync(result.path).toString('base64');
             if (result.fieldname === 'thumbnail') {
                 data['thumbnail'] = `data:${result.mimetype};base64,${base64}`;
             } else {
@@ -157,6 +162,17 @@ class TeacherController {
             const mylesson = await lesson.find({
                 id_course: req.params.id_course,
             });
+            const parlesson = await lesson.findOne({topic: data.topic});
+            await course.updateOne(
+                {_id: req.params.id_course},
+                {
+                    $push: {
+                        lesson: {
+                            id_lesson: parlesson._id.toString(),
+                        },
+                    },
+                },
+            );
             res.render('teachers/showLesson', {
                 lesson: mulMongooseToObject(mylesson),
                 course: {
@@ -232,17 +248,13 @@ class TeacherController {
         data['id_teacher'] = req.params.id_teacher;
         data['document'] = [];
         docs.map(result => {
+            const base64 = fs.readFileSync(result.path).toString('base64');
             if (result.fieldname === 'thumbnail') {
-                data['thumbnail'] = {
-                    name: result.originalname,
-                    data: fs.readFileSync(result.path).toString('base64'),
-                    contentType: result.mimetype,
-                };
+                data['thumbnail'] = `data:${result.mimetype};base64,${base64}`;
             } else {
                 data['document'].push({
                     name: result.originalname,
-                    data: fs.readFileSync(result.path).toString('base64'),
-                    contentType: result.mimetype,
+                    data: `data:${result.mimetype};base64,${base64}`,
                 });
             }
         });

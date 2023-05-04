@@ -28,9 +28,9 @@ class SiteController {
                     });
                 } else {
                     const data = req.body;
-                    const base64 = Buffer.from(
-                        fs.readFileSync(req.file.path),
-                    ).toString('base64');
+                    const base64 = fs
+                        .readFileSync(req.file.path)
+                        .toString('base64');
 
                     data[
                         'avatar'
@@ -48,9 +48,9 @@ class SiteController {
                     });
                 } else {
                     const data = req.body;
-                    const base64 = Buffer.from(
-                        fs.readFileSync(req.file.path),
-                    ).toString('base64');
+                    const base64 = fs
+                        .readFileSync(req.file.path)
+                        .toString('base64');
 
                     data[
                         'avatar'
