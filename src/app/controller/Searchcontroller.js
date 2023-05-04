@@ -3,7 +3,7 @@ const student = require('../model/User/Student/Student');
 const course = require('../model/User/Course/Course');
 const lesson = require('../model/User/Lesson/Lesson');
 const axios = require('axios');
-const { mongooseToObject, mulMongooseToObject } = require('../../util/mongoose');
+const {mongooseToObject, mulMongooseToObject} = require('../../util/mongoose');
 class SearchController {
     renderSearch(req, res) {
         res.render('search/renderSearch', {
@@ -18,18 +18,16 @@ class SearchController {
     }
 
     search(req, res) {
-        if (req.body.keyword !== '') {
-            course
-                .find({
-                    description: {
-                        $regex: `^${req.body.keyword}`,
-                        $options: 'i',
-                    },
-                })
-                .then(course => {
-                    res.json(course);
-                });
-        }
+        course
+            .find({
+                description: {
+                    $regex: `^${req.body.keyword}`,
+                    $options: 'i',
+                },
+            })
+            .then(course => {
+                res.json(course);
+            });
     }
 
     async searchKeyWord(req, res) {
