@@ -7,6 +7,8 @@ const Schema = mongoose.Schema;
 const Course = new Schema({
     description: {type: String},
     id_teacher: {type: String},
+    nameOfteacher: {type: String},
+    amountOfstudents: {type: Number},
     lesson: [
         {
             id_lesson: {type: String},

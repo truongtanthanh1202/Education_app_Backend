@@ -94,8 +94,9 @@ class TeacherController {
             },
         });
     }
-    createCourse(req, res) {
+    async createCourse(req, res) {
         const data = req.body;
+        const parteacher = await teacher.findById(req.params.id);
         //[Rating]
         const rating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
         //[Thumbnail]
@@ -105,6 +106,9 @@ class TeacherController {
         data['lesson'] = [];
         data['id_teacher'] = req.params.id;
         data['rating'] = rating;
+        data['nameOfteacher'] =
+            parteacher.firstname + ' ' + parteacher.lastname;
+        data['amountOfstudents'] = 0;
         const newcourse = new course(data);
         newcourse.save().then(async () => {
             const mycourse = await course.find({id_teacher: req.params.id});

@@ -18,16 +18,32 @@ class SearchController {
     }
 
     search(req, res) {
-        course
-            .find({
-                description: {
-                    $regex: `^${req.body.keyword}`,
-                    $options: 'i',
-                },
-            })
-            .then(course => {
-                res.json(course);
-            });
+        if (req.body.keyword !== '') {
+            course
+                .find({
+                    description: {
+                        $regex: `^${req.body.keyword}`,
+                        $options: 'i',
+                    },
+                })
+                .then(course => {
+                    res.json(course);
+                })
+                .catch(error => {
+                    res.json(error);
+                });
+        } else {
+            course
+                .find({})
+                .sort({rating: -1})
+                .limit(5)
+                .then(course => {
+                    res.json(course);
+                })
+                .catch(error => {
+                    res.json(error);
+                });
+        }
     }
 
     async searchKeyWord(req, res) {
