@@ -1,0 +1,44 @@
+<div class='mt-4'>
+    <div><button
+            type='button'
+            class='btn btn-outline-secondary'
+            style='margin-left: 20px;
+            margin-bottom: 20px'
+        ><a
+                href='/me/student/{{student.id_student}}/MyHome'
+                style='text-decoration: none;
+                color:yellowgreen'
+            >Home</a></button></div>
+    <div class='row'>
+        {{#each lesson}}
+            <div class='col-sm-6 col-lg-3'>
+                <div class='card' style='margin: 16px'>
+                    <a
+                        href='/student/{{this.id_student}}/{{this.id_course}}/{{this._id}}/{{this.topic}}/display'
+                    >
+                        <img
+                            src='{{this.thumbnail}}'
+                            class='card-img-top'
+                            alt='khoa hoc'
+                            style='width:  15vw;
+                    height: 100px;
+                    background-size: cover;'
+                        />
+                    </a>
+                    <div class='card-body'>
+                        <a
+                            href='/student/{{this.id_student}}/{{this.id_course}}/{{this._id}}/{{this.topic}}/display'
+                        >
+                            <h5 class='card-title'>{{this.topic}}</h5>
+                        </a>
+                        <p class='card-text'>{{this.description}}</p>
+                        <a
+                            href='/me/student/{{student.id_student}}/MyHome'
+                            class='btn btn-primary'
+                        >Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

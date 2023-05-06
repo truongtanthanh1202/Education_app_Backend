@@ -106,9 +106,10 @@ class TeacherController {
         data['lesson'] = [];
         data['id_teacher'] = req.params.id;
         data['rating'] = rating;
-        data['nameOfteacher'] =
-            parteacher.firstname + ' ' + parteacher.lastname;
-        data['amountOfstudents'] = 0;
+        parteacher.firstname + ' ' + parteacher.lastname;
+        data['amountOfstudents'] = Math.floor(
+            Math.random() * (5500 - 2000) + 2000,
+        );
         const newcourse = new course(data);
         newcourse.save().then(async () => {
             const mycourse = await course.find({id_teacher: req.params.id});

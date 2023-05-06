@@ -1,0 +1,59 @@
+<div class='mt-4'>
+    <div><button
+            type='button'
+            class='btn btn-outline-secondary'
+            style='margin-left: 20px;
+            margin-bottom: 20px'
+        ><a
+                href='/me/student/{{student.id}}/MyHome'
+                style='text-decoration: none;
+                color:yellowgreen'
+            >Home</a></button></div>
+    <form
+        action='/student/{{student.id}}/registerCourse/real'
+        method='post'
+        id='register'
+    >
+        <div class='row'>
+            {{#each course}}
+
+                <div class='col-sm-6 col-lg-3'>
+
+                    <div class='card' style='margin: 16px'>
+
+                        <img
+                            src='{{this.thumbnail}}'
+                            class='card-img-top'
+                            alt='khoa hoc'
+                            style='width:  15vw;
+                    height: 100px;
+                    background-size: cover;'
+                        />
+
+                        <div class='card-body'>
+
+                            <h5 class='card-title'>{{this.description}}</h5>
+
+                            <p class='card-text'>{{this.description}}</p>
+
+                            <input
+                                type='checkbox'
+                                value='{{this._id}}'
+                                name='id_course'
+                            />
+
+                        </div>
+                    </div>
+
+                </div>
+
+            {{/each}}
+        </div>
+    </form>
+    <button
+        class='btn btn-primary'
+        type='submit'
+        form='register'
+    >Register</button>
+
+</div>

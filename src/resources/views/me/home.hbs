@@ -74,10 +74,17 @@
                             class='dropdown-item'
                             href='/me/{{user.title}}/{{user._id}}/MyProfile'
                         >My profile</a>
-                        <a
-                            class='dropdown-item'
-                            href='/teacher/{{user._id}}/MyAllCourse'
-                        >My course</a>
+                        {{#if isteacher}}
+                            <a
+                                class='dropdown-item'
+                                href='/teacher/{{user._id}}/MyAllCourse'
+                            >My course</a>
+                        {{else}}
+                            <a
+                                class='dropdown-item'
+                                href='/student/{{user._id}}/MyAllCourse'
+                            >My course</a>
+                        {{/if}}
                         <div class='dropdown-divider'></div>
                         <a class='dropdown-item' href='/'>Log out</a>
                     </div>

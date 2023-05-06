@@ -14,4 +14,15 @@ router.use('/:id/MyProfile', StudentController.storeInfor);
 router.use('/MyProfile', StudentController.storeInfor);
 router.use('/:id/MyHome', StudentController.MyHome);
 router.post('/storeInfor', StudentController.store);
+router.use('/:id/MyAllCourse', StudentController.showCourse);
+router.use(
+    '/:id/registerCourse/render',
+    StudentController.renderRegisterCourse,
+);
+router.post('/:id/registerCourse/real', StudentController.registerCourse);
+router.use('/:id/:id_course/MyAllLesson', StudentController.renderAllLesson);
+router.use(
+    '/:id/:id_course/:id_lesson/:topic',
+    StudentController.renderParLesson,
+);
 module.exports = router;

@@ -1,7 +1,9 @@
 const fs = require('fs');
 const course = require('../model/User/Course/Course');
+const Lesson = require('../model/User/Lesson/Lesson');
 const student = require('../model/User/Student/Student');
-const {mongooseToObject} = require('../../util/mongoose');
+const student_course = require('../model/User/Student_Course/Student_Course');
+const {mongooseToObject, mulMongooseToObject} = require('../../util/mongoose');
 const {validationResult} = require('express-validator');
 const {checkEmail} = require('./Teachercontroller');
 class StudentController {
@@ -63,21 +65,119 @@ class StudentController {
         }
     }
 
-    //[check Email and Password]
-    // static checkEmail(req) {
-    //   student.findOne({ email: req.body.email }).then((student) => {
-    //     if (student !== null) {
-    //       StudentController.checkemail = true;
-    //     }
-    //   });
-    // }
-
     //[GET]
     MyHome(req, res) {
         student.findById(req.params.id).then(student => {
             res.render('me/home', {
                 user: mongooseToObject(student),
             });
+        });
+    }
+
+    async showCourse(req, res) {
+        const pupil = await student.findById(req.params.id);
+        const id_course = [];
+        pupil.course.map(result => {
+            id_course.push(result.id_course);
+        });
+        const allcourse = mulMongooseToObject(
+            await course.find({_id: {$in: id_course}}),
+        );
+        const newallcourse = allcourse.map(result => {
+            return {...result, id_student: req.params.id};
+        });
+        res.render('students/showCourse', {
+            course: newallcourse,
+            student: {
+                id: req.params.id,
+            },
+        });
+    }
+
+    async renderRegisterCourse(req, res) {
+        const allcourse = mulMongooseToObject(await course.find({}));
+        res.render('students/registerCourse', {
+            course: allcourse,
+            student: {
+                id: req.params.id,
+            },
+        });
+    }
+
+    async registerCourse(req, res) {
+        await student.updateOne(
+            {_id: req.params.id},
+            {
+                $push: {
+                    course: {
+                        id_course: req.body.id_course,
+                    },
+                },
+            },
+        );
+        await course.updateOne(
+            {_id: req.body.id_course},
+            {$inc: {amountOfstudents: 1}},
+        );
+        const alllesson = await Lesson.find({id_course: req.body.id_course});
+        const lessons = [];
+        alllesson.map(result => {
+            lessons.push({
+                id_lesson: result._id.toString(),
+                status: 0,
+            });
+        });
+        const data = {
+            id_student: req.params.id,
+            courses: [
+                {
+                    id_course: req.body.id_course,
+                    lessons: lessons,
+                },
+            ],
+        };
+        const document = new student_course(data);
+        await document.save();
+        res.redirect(`/student/${req.params.id}/MyAllCourse`);
+    }
+
+    async renderAllLesson(req, res) {
+        const myalllesson = mulMongooseToObject(
+            await Lesson.find({
+                id_course: req.params.id_course,
+            }),
+        );
+        const newAllLessons = myalllesson.map(result => {
+            return {...result, id_student: req.params.id};
+        });
+        res.render('students/showAllLesson', {
+            lesson: newAllLessons,
+            student: {
+                id_student: req.params.id,
+            },
+            course: {
+                id_course: req.params.id_course,
+            },
+        });
+    }
+
+    async renderParLesson(req, res) {
+        const mylesson = await Lesson.findById(req.params.id_lesson);
+        mylesson.video =
+            mylesson.video.slice(0, 23) + '/embed' + mylesson.video.slice(23);
+        mylesson.video = mylesson.video.replace('watch?v=', '');
+        if (mylesson.video.indexOf('&', 0) > 0) {
+            mylesson.video = mylesson.video.replace(
+                mylesson.video.slice(mylesson.video.indexOf('&', 0)),
+                '',
+            );
+        }
+        res.render('students/showParLesson', {
+            lesson: mongooseToObject(my),
+            student: {
+                id_student: req.params.id,
+                id_course: req.params.id_course,
+            },
         });
     }
 }
