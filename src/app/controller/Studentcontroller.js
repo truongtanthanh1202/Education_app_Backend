@@ -127,6 +127,7 @@ class StudentController {
                 status: 0,
             });
         });
+
         const data = {
             id_student: req.params.id,
             courses: [
@@ -136,8 +137,26 @@ class StudentController {
                 },
             ],
         };
-        const document = new student_course(data);
-        await document.save();
+        const pupil = await student_course.findOne({
+            id_student: req.params.id,
+        });
+        if (pupil === null) {
+            const document = new student_course(data);
+            await document.save();
+        } else {
+            await student_course.updateOne(
+                {id_student: req.params.id},
+                {
+                    $push: {
+                        courses: {
+                            id_course: req.body.id_course,
+                            lessons: lessons,
+                        },
+                    },
+                },
+            );
+        }
+
         res.redirect(`/student/${req.params.id}/MyAllCourse`);
     }
 
@@ -147,8 +166,26 @@ class StudentController {
                 id_course: req.params.id_course,
             }),
         );
-        const newAllLessons = myalllesson.map(result => {
+
+        let newAllLessons = myalllesson.map(result => {
             return {...result, id_student: req.params.id};
+        });
+
+        const pupil_course = await student_course.findOne({
+            id_student: req.params.id,
+        });
+
+        pupil_course.courses.map(result => {
+            if (result.id_course === req.params.id_course) {
+                result.lessons.map(lesson => {
+                    newAllLessons = newAllLessons.map(one => {
+                        return {
+                            ...one,
+                            status: lesson.status === 1 ? true : false,
+                        };
+                    });
+                });
+            }
         });
         res.render('students/showAllLesson', {
             lesson: newAllLessons,
@@ -162,6 +199,27 @@ class StudentController {
     }
 
     async renderParLesson(req, res) {
+        try {
+            await student_course.updateOne(
+                {
+                    id_student: req.params.id,
+                },
+                {$set: {'courses.$[course].lessons.$[lesson].status': 1}},
+                {
+                    arrayFilters: [
+                        {
+                            'course.id_course': req.params.id_course,
+                        },
+                        {
+                            'lesson.id_lesson': req.params.id_lesson,
+                        },
+                    ],
+                },
+            );
+        } catch (error) {
+            console.log(error);
+        }
+
         const mylesson = await Lesson.findById(req.params.id_lesson);
         mylesson.video =
             mylesson.video.slice(0, 23) + '/embed' + mylesson.video.slice(23);
@@ -173,7 +231,7 @@ class StudentController {
             );
         }
         res.render('students/showParLesson', {
-            lesson: mongooseToObject(my),
+            lesson: mongooseToObject(mylesson),
             student: {
                 id_student: req.params.id,
                 id_course: req.params.id_course,
