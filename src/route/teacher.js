@@ -23,6 +23,7 @@ router.post(
     multer.single('thumbnail'),
     TeacherController.createCourse,
 );
+router.post('/createCourse', TeacherController.addCourse);
 router.use('/:id/MyAllCourse', TeacherController.showCourse);
 router.use(
     '/:id_teacher/:id_course/creat_lesson',

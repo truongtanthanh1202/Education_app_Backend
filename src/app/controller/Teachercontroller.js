@@ -114,6 +114,29 @@ class TeacherController {
             },
         });
     }
+
+    async addCourse(req, res) {
+        const data = req.body;
+        const myteacher = await teacher.findOne({email: req.body.email});
+        const rating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
+        data['amountOfstudents'] = Math.floor(
+            Math.random() * (5500 - 2000) + 2000,
+        );
+        data['id_teacher'] = myteacher._id.toString();
+        data['nameOfteacher'] = myteacher.firstname + ' ' + myteacher.lastname;
+        data['rating'] = rating;
+        data['lessons'] = [];
+        const newcourse = new course(data);
+        try {
+            await newcourse.save();
+            const mycourse = await course.find({
+                id_teacher: myteacher._id.toString(),
+            });
+            res.json(mycourse);
+        } catch (error) {
+            res.json(error);
+        }
+    }
     async createCourse(req, res) {
         const data = req.body;
         const parteacher = await teacher.findById(req.params.id);
@@ -123,7 +146,7 @@ class TeacherController {
         const base64 = fs.readFileSync(req.file.path).toString('base64');
         data['thumbnail'] = `data:${req.file.mimetype};base64,${base64}`;
         //[lesson]
-        data['lesson'] = [];
+        data['lessons'] = [];
         data['id_teacher'] = req.params.id;
         data['rating'] = rating;
         parteacher.firstname + ' ' + parteacher.lastname;

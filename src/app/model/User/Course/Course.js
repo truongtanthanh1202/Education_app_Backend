@@ -5,22 +5,22 @@ const Schema = mongoose.Schema;
 
 //mongoose.Schema.Types.ObjectId
 const Course = new Schema({
+    name: {type: String},
     description: {type: String},
     id_teacher: {type: String},
     nameOfteacher: {type: String},
     amountOfstudents: {type: Number},
-    lesson: [
+    lessons: [
         {
             id_lesson: {type: String},
         },
     ],
     thumbnail: {
-        // name: String,
-        // data: Buffer,
-        // contentType: String,
         type: String,
     },
+    video: {type: String},
     rating: {type: String},
+    document: {type: String},
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now},
 });

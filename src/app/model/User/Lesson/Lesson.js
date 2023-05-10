@@ -10,18 +10,10 @@ const Lesson = new Schema({
     id_teacher: {type: String},
     id_course: {type: String},
     thumbnail: {
-        // name: String,
-        // data: Buffer,
-        // contentType: String,
         type: String,
     },
     video: {type: String},
-    document: [
-        {
-            name: String,
-            data: String,
-        },
-    ],
+    document: {type: String},
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now},
 });
