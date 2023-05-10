@@ -1,6 +1,7 @@
 const teacher = require('../model/User/Teacher/Teacher');
 const course = require('../model/User/Course/Course');
 const lesson = require('../model/User/Lesson/Lesson');
+const student = require('../model/User/Student/Student');
 const fs = require('fs');
 const {validationResult} = require('express-validator');
 const {mongooseToObject, mulMongooseToObject} = require('../../util/mongoose');
@@ -8,18 +9,37 @@ const mongoose = require('mongoose');
 // const { mulMongooseToObject } = require("../../util/mongoose");
 class TeacherController {
     async store(req, res) {
-        const allcourse = await course.find({});
-        const data = {
-            course: allcourse,
-        };
-        const user = new teacher(req.body);
-        try {
-            user.save();
-            const userdata = teacher.findOne({email: req.body.email});
-            data['user'] = userdata;
+        let validatation = false;
+        const email_student = await student.find({email: req.body.email});
+        const email_teacher = await teacher.find({email: req.body.email});
+        if (email_student.length === 0 && email_teacher.length === 0) {
+            validatation = true;
+        }
+        let data = {};
+        if (validatation) {
+            const allcourse = await course.find({});
+            data = {
+                course: allcourse,
+            };
+            const user = new teacher(req.body);
+            try {
+                await user.save();
+                const userdata = await teacher.findOne({email: req.body.email});
+                if (userdata !== null) {
+                    data['user'] = userdata;
+                    data['message'] = '200';
+                } else {
+                    data['user'] = 'nothing';
+                }
+                res.json(data);
+            } catch (error) {
+                res.json(error);
+            }
+        } else {
+            data = {
+                message: '400',
+            };
             res.json(data);
-        } catch (error) {
-            res.json(error);
         }
     }
 

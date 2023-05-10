@@ -6,6 +6,7 @@ const student_course = require('../model/User/Student_Course/Student_Course');
 const {mongooseToObject, mulMongooseToObject} = require('../../util/mongoose');
 const {validationResult} = require('express-validator');
 const {checkEmail} = require('./Teachercontroller');
+const Teacher = require('../model/User/Teacher/Teacher');
 class StudentController {
     //[GET]
     storeInfor(req, res, error) {
@@ -17,23 +18,37 @@ class StudentController {
     }
 
     async store(req, res) {
-        const allcourse = await course.find({});
-        const data = {
-            course: allcourse,
-        };
-        const user = new student(req.body);
-        try {
-            await user.save();
-            const userdata = await student.findOne({email: req.body.email});
-            if (userdata !== null) {
-                data['user'] = userdata;
-            } else {
-                data['user'] = 'nothing';
+        let validatation = false;
+        const email_student = await student.find({email: req.body.email});
+        const email_teacher = await Teacher.find({email: req.body.email});
+        if (email_student.length === 0 && email_teacher.length === 0) {
+            validatation = true;
+        }
+        let data = {};
+        if (validatation) {
+            const allcourse = await course.find({});
+            data = {
+                course: allcourse,
+            };
+            const user = new student(req.body);
+            try {
+                await user.save();
+                const userdata = await student.findOne({email: req.body.email});
+                if (userdata !== null) {
+                    data['user'] = userdata;
+                    data['message'] = '200';
+                } else {
+                    data['user'] = 'nothing';
+                }
+                res.json(data);
+            } catch (error) {
+                res.json(error);
             }
-
+        } else {
+            data = {
+                message: '400',
+            };
             res.json(data);
-        } catch (error) {
-            res.json(error);
         }
     }
 
