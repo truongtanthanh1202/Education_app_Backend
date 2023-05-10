@@ -23,9 +23,14 @@ class StudentController {
         };
         const user = new student(req.body);
         try {
-            user.save();
-            const userdata = student.findOne({email: req.body.email});
-            data['user'] = userdata;
+            await user.save();
+            const userdata = await student.findOne({email: req.body.email});
+            if (userdata !== null) {
+                data['user'] = userdata;
+            } else {
+                data['user'] = 'nothing';
+            }
+
             res.json(data);
         } catch (error) {
             res.json(error);

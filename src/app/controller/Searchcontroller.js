@@ -36,7 +36,7 @@ class SearchController {
             course
                 .find({})
                 .sort({rating: -1})
-                .limit(5)
+                .limit(6)
                 .then(course => {
                     res.json(course);
                 })

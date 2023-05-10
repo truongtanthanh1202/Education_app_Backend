@@ -14,6 +14,6 @@ router.post(
     validator.validatorLogin(),
     MeController.storeIn,
 );
-router.post('/logintest', MeController.storeTest);
+router.post('/logintest', MeController.login);
 router.use('/total', Mecontroller.show);
 module.exports = router;

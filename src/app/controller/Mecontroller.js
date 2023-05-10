@@ -157,7 +157,7 @@ class MeController {
         }
     }
 
-    async storeTest(req, res) {
+    async login(req, res) {
         const allcourse = await course.find({});
         const data = {
             course: allcourse,
