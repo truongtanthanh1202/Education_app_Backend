@@ -179,6 +179,99 @@ class StudentController {
 
         res.redirect(`/student/${req.params.id}/MyAllCourse`);
     }
+    //[Real]
+    async purchaseCourse(req, res) {
+        //update course in student
+        const mystudent = await student.findOneAndUpdate(
+            {email: req.body.email},
+            {
+                $push: {
+                    course: {
+                        id_course: req.body.id_course,
+                    },
+                },
+            },
+        );
+        // update the number Of members
+        await course.updateOne(
+            {_id: req.body.id_course},
+            {$inc: {amountOfstudents: 1}},
+        );
+
+        const alllesson = await Lesson.find({id_course: req.body.id_course});
+        const lessons = [];
+        alllesson.map(result => {
+            lessons.push({
+                id_lesson: result._id.toString(),
+                status: 0,
+            });
+        });
+
+        const data = {
+            id_student: mystudent._id.toString(),
+            courses: [
+                {
+                    id_course: req.body.id_course,
+                    lessons: lessons,
+                },
+            ],
+        };
+        const pupil = await student_course.findOne({
+            id_student: req.params.id,
+        });
+        if (pupil === null) {
+            const document = new student_course(data);
+            await document.save();
+        } else {
+            await student_course.updateOne(
+                {id_student: mystudent._id.toString()},
+                {
+                    $push: {
+                        courses: {
+                            id_course: req.body.id_course,
+                            lessons: lessons,
+                        },
+                    },
+                },
+            );
+        }
+        res.json({message: '200'});
+    }
+
+    async MyCourses(req, res) {
+        const mycourses = await student.findOne({email: req.body.email});
+        const id_course = [];
+        mycourses.course.map(result => {
+            id_course.push(result.id_course);
+        });
+        const allcourse = mulMongooseToObject(
+            await course.find({_id: {$in: id_course}}),
+        );
+        res.json(allcourse);
+    }
+
+    async MyLessons(req, res) {
+        const mylessons = mulMongooseToObject(
+            await Lesson.find({id_course: req.body.id_course}),
+        );
+
+        const mystudent = await student.findOne({email: req.body.email});
+        const pupil_course = await student_course.findOne({
+            id_student: mystudent._id.toString(),
+        });
+        pupil_course.courses.map(result => {
+            if (result.id_course === req.body.id_course) {
+                result.lessons.map(lesson => {
+                    for (let i = 0; i < mylessons.length; i++) {
+                        if (mylessons[i]._id.toString() === lesson.id_lesson) {
+                            mylessons[i].status = lesson.status;
+                        }
+                    }
+                });
+            }
+        });
+        res.json(mylessons);
+    }
 
     async renderAllLesson(req, res) {
         const myalllesson = mulMongooseToObject(
