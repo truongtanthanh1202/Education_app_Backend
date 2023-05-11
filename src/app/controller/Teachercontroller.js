@@ -114,7 +114,7 @@ class TeacherController {
             },
         });
     }
-
+    //[Real]
     async addCourse(req, res) {
         const data = req.body;
         const myteacher = await teacher.findOne({email: req.body.email});
@@ -129,13 +129,18 @@ class TeacherController {
         const newcourse = new course(data);
         try {
             await newcourse.save();
-            const mycourse = await course.find({
-                id_teacher: myteacher._id.toString(),
-            });
-            res.json(mycourse);
+            res.json({message: '200'});
         } catch (error) {
-            res.json(error);
+            res.json({message: '400'});
         }
+    }
+
+    async MyCourses(req, res) {
+        const myteacher = await teacher.findOne({email: req.body.email});
+        const mycourse = await course.find({
+            id_teacher: myteacher._id.toString(),
+        });
+        res.json(mycourse);
     }
     async createCourse(req, res) {
         const data = req.body;
@@ -185,6 +190,37 @@ class TeacherController {
                 id_course: req.params.id_course,
             },
         });
+    }
+    //[Real]
+    async addLesson(req, res) {
+        const data = req.body;
+        const mycourse = await course.findOne({_id: req.body.id_course});
+        data['id_teacher'] = mycourse.id_teacher;
+        const newLesson = new lesson(data);
+        try {
+            await newLesson.save();
+            const parlesson = await lesson.findOne({topic: req.body.topic});
+            await course.updateOne(
+                {_id: req.body.id_course},
+                {
+                    $push: {
+                        lessons: [
+                            {
+                                id_lesson: parlesson._id.toString(),
+                            },
+                        ],
+                    },
+                },
+            );
+            res.json({message: '200'});
+        } catch (error) {
+            res.json({messsage: '400'});
+        }
+    }
+
+    async MyLessons(req, res) {
+        const mylessons = await lesson.find({id_course: req.body.id_course});
+        res.json(mylessons);
     }
 
     createLesson(req, res) {

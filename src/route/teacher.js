@@ -7,12 +7,6 @@ const TeacherController = require('../app/controller/Teachercontroller');
 const {validate} = require('../app/model/User/Student/Student');
 const Teachercontroller = require('../app/controller/Teachercontroller');
 router.use('/myProfile', TeacherController.storeInfor);
-// router.post(
-//   "/signup/MyProfile",
-//   multer.single("myAvatar"),
-//   validator.validatorSignup(),
-//   TeacherController.storeUp
-// );
 router.use('/:id/MyProfile', TeacherController.storeInfor);
 router.use('/MyProfile', TeacherController.storeInfor);
 router.use('/:id/MyHome', TeacherController.MyHome);
@@ -23,12 +17,17 @@ router.post(
     multer.single('thumbnail'),
     TeacherController.createCourse,
 );
+//[Real]
 router.post('/createCourse', TeacherController.addCourse);
+router.use('/MyCourses', TeacherController.MyCourses);
 router.use('/:id/MyAllCourse', TeacherController.showCourse);
 router.use(
     '/:id_teacher/:id_course/creat_lesson',
     TeacherController.renderCreatLesson,
 );
+//[Real]
+router.post('/createLesson', TeacherController.addLesson);
+router.use('/MyLessons', TeacherController.MyLessons);
 router.post(
     '/:id_teacher/:id_course/myLesson',
     multer.any('document'),
