@@ -161,6 +161,7 @@ class MeController {
         const allcourse = await course.find({});
         const data = {
             course: allcourse,
+            message: '200',
         };
         const mystudent = await student.findOne({
             email: req.body.email,
@@ -178,7 +179,7 @@ class MeController {
                 data['user'] = myteacher;
                 res.json(data);
             } else {
-                res.json({messsage: 'Account do not exist'});
+                res.json({message: '400'});
             }
         }
     }
