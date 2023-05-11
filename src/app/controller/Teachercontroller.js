@@ -129,6 +129,17 @@ class TeacherController {
         const newcourse = new course(data);
         try {
             await newcourse.save();
+            const mycourse = await course.findOne({name: req.body.name});
+            await teacher.updateOne(
+                {email: req.body.email},
+                {
+                    $push: {
+                        course: {
+                            id_course: mycourse._id.toString(),
+                        },
+                    },
+                },
+            );
             res.json({message: '200'});
         } catch (error) {
             res.json({message: '400'});

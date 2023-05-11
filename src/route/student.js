@@ -20,9 +20,11 @@ router.use(
     StudentController.renderRegisterCourse,
 );
 router.post('/:id/registerCourse/real', StudentController.registerCourse);
+//[Real]
 router.post('/purchaseCourse', StudentController.purchaseCourse);
 router.post('/MyCourses', StudentController.MyCourses);
 router.post('/MyLessons', StudentController.MyLessons);
+router.post('/ParLesson', StudentController.showParLesson);
 router.use('/:id/:id_course/MyAllLesson', StudentController.renderAllLesson);
 router.use(
     '/:id/:id_course/:id_lesson/:topic',

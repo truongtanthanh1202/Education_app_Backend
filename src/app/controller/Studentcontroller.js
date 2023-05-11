@@ -273,6 +273,35 @@ class StudentController {
         res.json(mylessons);
     }
 
+    async showParLesson(req, res) {
+        const mystudent = await student.findOne({email: req.body.email});
+        try {
+            await student_course.updateOne(
+                {
+                    id_student: mystudent._id.toString(),
+                },
+                {
+                    $set: {
+                        'courses.$[course].lessons.$[lesson].status': 1,
+                    },
+                },
+                {
+                    arrayFilters: [
+                        {
+                            'course.id_course': req.body.id_course,
+                        },
+                        {
+                            'lesson.id_lesson': req.body.id_lesson,
+                        },
+                    ],
+                },
+            );
+            res.json({message: '200'});
+        } catch (error) {
+            res.json({message: '400'});
+        }
+    }
+
     async renderAllLesson(req, res) {
         const myalllesson = mulMongooseToObject(
             await Lesson.find({
