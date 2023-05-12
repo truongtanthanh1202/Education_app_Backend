@@ -60,32 +60,36 @@ class MeController {
     }
 
     async resetPassword(req, res) {
-        const Student = await student.findOne({
-            email: req.body.email,
-        });
-        if (Student === null) {
-            const Teacher = await teacher.findOne({
+        if (req.body.confirmpassword !== req.body.password) {
+            res.json({message: '400'});
+        } else {
+            const Student = await student.findOne({
                 email: req.body.email,
             });
-            if (Teacher === null) {
-                res.json({message: 'Something went wrong!'});
+            if (Student === null) {
+                const Teacher = await teacher.findOne({
+                    email: req.body.email,
+                });
+                if (Teacher === null) {
+                    res.json({message: '400'});
+                } else {
+                    await teacher.findOneAndUpdate(
+                        {email: req.body.email},
+                        {$set: {password: req.body.password}},
+                        {upsert: true},
+                    );
+                    res.json({
+                        message: '200',
+                    });
+                }
             } else {
-                await teacher.findOneAndUpdate(
+                await student.findOneAndUpdate(
                     {email: req.body.email},
                     {$set: {password: req.body.password}},
                     {upsert: true},
                 );
-                res.json({
-                    message: 'your password has been changed successfully!',
-                });
+                res.json({message: '200'});
             }
-        } else {
-            await student.findOneAndUpdate(
-                {email: req.body.email},
-                {$set: {password: req.body.password}},
-                {upsert: true},
-            );
-            res.json({message: 'your password has been changed successfully!'});
         }
     }
 

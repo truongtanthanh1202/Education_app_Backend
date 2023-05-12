@@ -153,12 +153,12 @@ class EmailController {
                 otp: req.body.otp,
             });
             if (teacher === null) {
-                res.json({message: 'OTP code is not correct!'});
+                res.json({message: '400'});
             } else {
-                res.json({message: 'OTP code is correct!'});
+                res.json({message: '200'});
             }
         } else {
-            res.json({message: 'OTP code is correct!'});
+            res.json({message: '200'});
         }
     }
 }
