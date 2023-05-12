@@ -130,7 +130,6 @@ class MeController {
                     {email: req.body.email},
                     {
                         $set: {
-                            password: req.body.password,
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,
                         },
@@ -147,7 +146,6 @@ class MeController {
                     {email: req.body.email},
                     {
                         $set: {
-                            password: req.body.password,
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,
                         },
