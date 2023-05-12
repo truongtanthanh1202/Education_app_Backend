@@ -123,6 +123,44 @@ class MeController {
         }
     }
 
+    async changeProfile(req, res) {
+        if (req.body.title === 'teacher') {
+            try {
+                await teacher.updateOne(
+                    {email: req.body.email},
+                    {
+                        $set: {
+                            password: req.body.password,
+                            firstname: req.body.firstname,
+                            lastname: req.body.lastname,
+                        },
+                    },
+                    {upsert: true},
+                );
+                res.json({message: '200'});
+            } catch (error) {
+                res.json({message: '400'});
+            }
+        } else {
+            try {
+                await student.updateOne(
+                    {email: req.body.email},
+                    {
+                        $set: {
+                            password: req.body.password,
+                            firstname: req.body.firstname,
+                            lastname: req.body.lastname,
+                        },
+                    },
+                    {upsert: true},
+                );
+                res.json({message: '200'});
+            } catch (error) {
+                res.json({message: '400'});
+            }
+        }
+    }
+
     storeIn(req, res) {
         const error = validationResult(req);
         if (!error.isEmpty()) {

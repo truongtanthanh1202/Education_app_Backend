@@ -15,5 +15,6 @@ router.post(
     MeController.storeIn,
 );
 router.post('/logintest', MeController.login);
+router.post('/changeProfile', Mecontroller.changeProfile);
 router.use('/total', Mecontroller.show);
 module.exports = router;
