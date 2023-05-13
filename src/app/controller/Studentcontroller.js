@@ -217,7 +217,7 @@ class StudentController {
             ],
         };
         const pupil = await student_course.findOne({
-            id_student: req.params.id,
+            id_student: mystudent._id.toString(),
         });
         if (pupil === null) {
             const document = new student_course(data);
