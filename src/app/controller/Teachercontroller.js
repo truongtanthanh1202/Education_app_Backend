@@ -2,6 +2,7 @@ const teacher = require('../model/User/Teacher/Teacher');
 const course = require('../model/User/Course/Course');
 const lesson = require('../model/User/Lesson/Lesson');
 const student = require('../model/User/Student/Student');
+const axios = require('axios');
 const fs = require('fs');
 const {validationResult} = require('express-validator');
 const {mongooseToObject, mulMongooseToObject} = require('../../util/mongoose');
@@ -152,6 +153,22 @@ class TeacherController {
             id_teacher: myteacher._id.toString(),
         });
         res.json(mycourse);
+    }
+
+    async getTest(req, res) {
+        res.json(req.query);
+    }
+
+    async testAxios(req, res) {
+        const response = await axios.get(
+            'http://localhost:4848/teacher/testGet',
+            {
+                params: {
+                    id_course: '03448383',
+                },
+            },
+        );
+        res.json(response.data);
     }
     async createCourse(req, res) {
         const data = req.body;

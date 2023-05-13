@@ -28,6 +28,8 @@ router.use(
 //[Real]
 router.post('/createLesson', TeacherController.addLesson);
 router.use('/MyLessons', TeacherController.MyLessons);
+router.use('/testAxios', TeacherController.testAxios);
+router.use('/testGet', TeacherController.getTest);
 router.post(
     '/:id_teacher/:id_course/myLesson',
     multer.any('document'),

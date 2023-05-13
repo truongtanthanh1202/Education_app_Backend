@@ -21,7 +21,7 @@ class SearchController {
         if (req.body.keyword !== '') {
             course
                 .find({
-                    description: {
+                    name: {
                         $regex: `^${req.body.keyword}`,
                         $options: 'i',
                     },
